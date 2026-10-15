@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marvel: Неодобренный тираж — проект, раскадровка и аниматик</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E2E8EB; --card:#F4F6F5; --ink:#14213D; --ink-soft:#4a5670; --proof:#D7263D; --line:#b8c2c9;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141a26; --card:#1d2535; --ink:#e8edf2; --ink-soft:#a3afc2; --proof:#ff5a70; --line:#34405a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{ --paper:#141a26; --card:#1d2535; --ink:#e8edf2; --ink-soft:#a3afc2; --proof:#ff5a70; --line:#34405a; color-scheme: dark; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Rubik,system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,48px)}
+header{display:grid;gap:18px;margin-bottom:36px}
+h1{font-weight:800;font-size:clamp(2.2rem,7vw,5.2rem);line-height:.95;margin:0;letter-spacing:-.02em}
+h1 s{text-decoration-color:var(--proof);text-decoration-thickness:.09em;color:var(--ink-soft)}
+.lead{max-width:62ch;font-size:1.05rem;color:var(--ink-soft);margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+button.play{font:inherit;font-weight:800;background:var(--proof);color:#fff;border:0;padding:14px 22px;border-radius:2px;cursor:pointer;font-size:1.05rem;box-shadow:4px 4px 0 var(--ink)}
+button.play:hover{transform:translate(-1px,-1px)}
+button.play:focus-visible,button.close:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.note{font-family:Caveat,cursive;font-size:1.4rem;color:var(--proof);transform:rotate(-2deg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:28px}
+figure.frame{margin:0;background:var(--card);border:1px solid var(--line);padding:10px 10px 16px}
+figure.frame svg{display:block;width:100%;height:auto;background:#fff}
+figcaption{padding:12px 6px 0;display:grid;gap:6px;font-size:.92rem}
+.tc{font-weight:800;font-size:1.05rem}
+.tc span{font-weight:400;color:var(--ink-soft);margin-left:8px}
+figcaption p{margin:0}
+figcaption b{font-weight:500;color:var(--ink-soft)}
+.quote{font-family:Caveat,cursive;font-size:1.35rem;color:var(--proof);line-height:1.2}
+footer{margin-top:40px;color:var(--ink-soft);font-size:.9rem;max-width:70ch}
+
+.cover{margin:0;max-width:300px;background:var(--card);border:1px solid var(--line);padding:8px 8px 12px}
+.cover svg{display:block;width:100%;height:auto}
+.cover figcaption{padding:10px 4px 0;font-size:.9rem;color:var(--ink-soft)}
+svg .nm{font:800 7.5px Rubik,sans-serif;fill:#fff;stroke:#14213D;stroke-width:2px;paint-order:stroke;text-anchor:middle}
+
+nav.toc{display:flex;flex-wrap:wrap;gap:8px 18px}
+nav.toc a{color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--proof);text-decoration-thickness:2px;text-underline-offset:4px}
+nav.toc a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+section.sec{margin:56px 0 0}
+section.sec h2{font-weight:800;font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.05;margin:0 0 16px;letter-spacing:-.01em}
+section.sec h3{font-weight:800;font-size:1.1rem;margin:26px 0 8px}
+section.sec p{max-width:70ch;margin:0 0 12px}
+section.sec .soft{color:var(--ink-soft)}
+.logline{font-size:clamp(1.15rem,2.2vw,1.5rem);line-height:1.35;max-width:46ch;border-left:5px solid var(--proof);padding-left:16px;margin:0 0 18px}
+.tw{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem;background:var(--card)}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{font-weight:800;background:var(--paper)}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px;margin:12px 0}
+.tier{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--proof);padding:12px 14px}
+.tier b{display:block;font-weight:800;margin-bottom:4px}
+.tier p{font-size:.92rem;margin:0}
+.promptbox{background:var(--card);border:1px solid var(--line);padding:14px;margin-top:12px}
+.promptbox pre{white-space:pre-wrap;word-break:break-word;font:400 .85rem/1.55 Rubik,system-ui,sans-serif;max-height:420px;overflow:auto;margin:12px 0 0;padding:12px;background:var(--paper)}
+button.copy{font:inherit;font-weight:500;background:var(--ink);color:var(--paper);border:0;padding:9px 16px;cursor:pointer}
+button.copy:focus-visible{outline:3px solid var(--proof);outline-offset:3px}
+@media print{#stage,.bar,nav.toc{display:none!important}}
+/* animatic */
+#stage{position:fixed;inset:0;background:#0b0e16;display:none;z-index:50;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0px) 12px env(safe-area-inset-bottom,0px)}
+#stage.on{display:flex}
+#stage .screen{width:min(96vw,calc((100vh - 170px)*16/9));aspect-ratio:16/9;background:#fff;position:relative}
+#stage svg{width:100%;height:100%;display:block;animation:fade .5s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion: reduce){#stage svg{animation:none}}
+#cap{color:#e8edf2;text-align:center;margin-top:14px;max-width:80ch;min-height:76px}
+#cap .t{font-weight:800}
+#cap .s{color:#9aa6bb;font-size:.9rem}
+#cap .q{font-family:Caveat,cursive;font-size:1.6rem;color:#ff6a7f}
+#prog{position:absolute;left:0;bottom:0;height:5px;background:#D7263D;width:0}
+button.close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;font:inherit;background:#e8edf2;color:#14213D;border:0;padding:8px 14px;cursor:pointer;font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- общие определения -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.7" fill="#D7263D"/></pattern>
+  <pattern id="dotsC" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.7" fill="#1B98C9"/></pattern>
+  <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#14213D" stroke-width="1.2"/></pattern>
+  <pattern id="hatchW" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)"><line x1="0" y1="0" x2="0" y2="5" stroke="#fff" stroke-width="1"/></pattern>
+  <radialGradient id="glow"><stop offset="0" stop-color="#fff6c8"/><stop offset=".4" stop-color="#ffd66b" stop-opacity=".7"/><stop offset="1" stop-color="#ffd66b" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gglow"><stop offset="0" stop-color="#c9ff9a"/><stop offset=".5" stop-color="#5fd36b" stop-opacity=".6"/><stop offset="1" stop-color="#5fd36b" stop-opacity="0"/></radialGradient>
+  <linearGradient id="wash" x1="0" x2="1"><stop offset="0" stop-color="#8e6ad8"/><stop offset=".5" stop-color="#4fb6c9"/><stop offset="1" stop-color="#f0b45a"/></linearGradient>
+  <pattern id="kneel" width="14" height="22" patternUnits="userSpaceOnUse"><circle cx="7" cy="5" r="3.2" fill="#262640"/><path d="M2 22 Q3 10 7 9 Q11 10 12 22Z" fill="#262640"/></pattern>
+  <pattern id="eyes" width="20" height="24" patternUnits="userSpaceOnUse"><circle cx="10" cy="7" r="5" fill="#0d0f1a"/><path d="M2 24 Q3 13 10 12 Q17 13 18 24Z" fill="#0d0f1a"/><circle cx="8" cy="7" r="1.2" fill="#fff"/><circle cx="12" cy="7" r="1.2" fill="#fff"/></pattern>
+</defs>
+</svg>
+
+<div class="wrap">
+<header>
+  <h1>Неодобренный <s>тираж</s></h1>
+  <p class="lead">Раскадровка трейлера на 47 секунд: 12 ключевых кадров. Каждая реальность нарисована в своём «медиуме»: ластик и карандаш, точки Бен-Дэй, пластилин, ксерокс, акварель, вырезной коллаж. Это схематичные векторные эскизы для обсуждения композиции и цвета, а не финальные кадры.</p>
+  <div class="bar">
+    <button class="play" id="playBtn">Запустить аниматик</button>
+    <span class="note">кадры сменяются по таймкодам</span>
+  </div>
+  <nav class="toc" aria-label="Разделы"><a href="#concept">Концепция</a><a href="#visual">Визуальный язык</a><a href="#storyboard">Раскадровка</a><a href="#sound">Звук</a><a href="#prompt">Промпт</a><a href="#risks">Риски</a></nav>
+  <figure class="cover">
+<svg viewBox="0 0 240 340" role="img" aria-label="Обложка выпуска №1: герои отдела отменённых на фоне белой пустоты">
+  <rect width="240" height="340" fill="#f2c230"/><rect width="240" height="340" fill="url(#dots)"/>
+  <path d="M0 250 Q60 226 120 258 T240 246 V340 H0Z" fill="#f6f6f2"/>
+  <g stroke="#9ba3ad" fill="none"><path d="M10 270 Q60 258 110 284"/><path d="M130 300 Q180 286 230 304" stroke-dasharray="3 4"/></g>
+  <rect width="240" height="30" fill="#14213D"/>
+  <text x="10" y="20" font-family="Rubik,sans-serif" font-weight="800" font-size="13" fill="#fff">MARVEL</text>
+  <text x="230" y="20" text-anchor="end" font-family="Rubik,sans-serif" font-weight="500" font-size="9" fill="#fff">№1 · ОТМЕНЁН</text>
+  <text x="120" y="64" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="25" fill="#D7263D" stroke="#14213D" stroke-width="3" paint-order="stroke">НЕОДОБРЕННЫЙ</text>
+  <text x="120" y="92" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="25" fill="#D7263D" stroke="#14213D" stroke-width="3" paint-order="stroke">ТИРАЖ</text>
+  <g transform="translate(-19 60) scale(.9)">
+    <circle cx="154" cy="100" r="70" fill="url(#glow)"/>
+    <path d="M168 150 Q96 150 110 80 Q122 32 160 54 Q142 72 150 100 Q156 124 178 130Z" fill="#8a5a2b" stroke="#14213D" stroke-width="3"/>
+    <rect x="168" y="112" width="34" height="62" rx="8" fill="#2f9e5a" stroke="#14213D" stroke-width="3"/>
+    <circle cx="186" cy="98" r="18" fill="#f2d2b0" stroke="#14213D" stroke-width="3"/>
+    <circle cx="180" cy="98" r="2" fill="#14213D"/><circle cx="192" cy="98" r="2" fill="#14213D"/><path d="M178 106 Q186 114 195 106" stroke="#14213D" stroke-width="2.4" fill="none"/>
+  </g>
+  <g transform="translate(18 110)"><path d="M10 40L12 6M20 40L20 2M30 40L28 6" stroke="#dfe6ec" stroke-width="3" stroke-linecap="round"/><rect x="6" y="38" width="28" height="9" fill="#14213D"/></g>
+  <g transform="translate(184 112)"><rect x="2" y="4" width="32" height="14" fill="#9aa7b5" stroke="#14213D" stroke-width="1.5"/><rect x="15" y="18" width="6" height="26" fill="#6b4529"/></g>
+  <circle cx="44" cy="232" r="24" fill="#f7f1dc" stroke="#14213D" stroke-width="2.5"/><ellipse cx="44" cy="210" rx="30" ry="5" fill="#5c3b24"/><rect x="28" y="192" width="32" height="18" rx="7" fill="#6b4529"/><path d="M58 236 Q78 232 80 242 Q66 248 58 244Z" fill="#f08a2d"/><circle cx="38" cy="228" r="4" fill="#fff" stroke="#14213D"/><circle cx="50" cy="228" r="4" fill="#fff" stroke="#14213D"/>
+  <circle cx="194" cy="232" r="28" fill="#c1121f" stroke="#111" stroke-width="2.5"/><path d="M170 222 Q182 208 190 232 Q178 244 170 238Z" fill="#111"/><path d="M218 222 Q206 208 198 232 Q210 244 218 238Z" fill="#111"/><path d="M175 224 Q182 218 187 230 Q180 234 175 230Z" fill="#fff"/><path d="M213 224 Q206 218 201 230 Q208 234 213 230Z" fill="#fff"/>
+  <rect y="314" width="240" height="26" fill="#14213D"/>
+  <text x="120" y="326" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="500" font-size="7" fill="#fff">Говард · Белка · Дэдпул · Сёрфер · Стрэндж</text>
+  <text x="120" y="336" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="500" font-size="7" fill="#fff">Мун-Гёрл и Дьявол-Динозавр · Man-Thing</text>
+  <rect x="3" y="3" width="234" height="334" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+  <figcaption>Обложка выпуска №1 «Отдела отменённых». Это условная обложка в духе комикса, а не официальная графика Marvel.</figcaption>
+  </figure>
+</header>
+
+
+<section class="sec" id="concept">
+  <h2>Концепция</h2>
+  <p class="logline">Мультивселенная оказывается бесконечным архивом комиксов. Космический Редактор решает «сократить тираж» и стирает всё лишнее. Спасти архив может только команда тех, кого стирают первыми.</p>
+  <p>Каждая реальность это «выпуск», каждая эпоха это «тираж». Редактор, усталый архивариус, запускает «Правку»: белую пустоту, которая стирает миры, оставляя «канон». Первыми исчезают отменённые серии, странные одиночные выпуски и герои, которых «никто не читает».</p>
+  <p class="soft">Тематическое сердце: что остаётся в памяти? Не главные герои, а те, кого любили. Взрослые темы: страх быть забытым, цена канона, бессилие архивариуса перед бесконечностью. Аудитория 18+, тон: мрачный юмор, эпик, драма, повороты; ужас экзистенциальный, а не телесный.</p>
+
+  <h3>Команда «Отдел отменённых»</h3>
+  <div class="tw"><table>
+    <tr><th>Герой</th><th>Роль и характер</th></tr>
+    <tr><td>Говард-Утка</td><td>Лидер поневоле, циничный детектив-неудачник, ненавидит команду и первым её не бросает</td></tr>
+    <tr><td>Девушка-Белка (Doreen Green)</td><td>Непобедимая оптимистка, ломает логику эпика; её победа над богом-пожирателем миров это «неудобный канон»</td></tr>
+    <tr><td>Дэдпул</td><td>Единственный, кто знает, что они в комиксе; скрывает, что понял это первым</td></tr>
+    <tr><td>Серебряный Сёрфер</td><td>Трагический монолог в каждой сцене, которому все мешают шутками</td></tr>
+    <tr><td>Доктор Стрэндж (неудачная ветка)</td><td>Уставший бюрократ магии, ведёт учёт заклинаний</td></tr>
+    <tr><td>Мун-Гёрл и Дьявол-Динозавр</td><td>Детская гениальность и 10-тонный друг, эмоциональный центр команды</td></tr>
+    <tr><td>Man-Thing</td><td>Молчит весь фильм, светится страхом, когда «пустота» подходит близко</td></tr>
+  </table></div>
+
+  <h3>Как вместить максимально широкий состав без хаоса</h3>
+  <p class="soft">Показать буквально всех нельзя и не нужно. Состав разложен на четыре уровня.</p>
+  <div class="tiers">
+    <div class="tier"><b>Уровень 1: команда</b><p>7 героев: крупные планы, реплики, характеры.</p></div>
+    <div class="tier"><b>Уровень 2: камео</b><p>12–20 героев по 0,5–1 секунде, один яркий жест на каждого.</p></div>
+    <div class="tier"><b>Уровень 3: бумажная толпа</b><p>Сотни героев как силуэты, штампы и коллаж обложек: текстура фона.</p></div>
+    <div class="tier"><b>Уровень 4: пасхалки</b><p>Обложки и логотипы забытых изданий в углах кадра.</p></div>
+  </div>
+  <p class="soft">Правила чистоты: один герой в фокусе на кадр; у каждого мира своя палитра; в кадре не больше двух стилей одновременно, кроме финала.</p>
+</section>
+
+<section class="sec" id="visual">
+  <h2>Визуальный язык</h2>
+  <p>Каждая реальность выглядит как свой медиум. Переходя между мирами, герои физически перенимают стиль («глитч идентичности»). В финале все стили сходятся в единую линию.</p>
+  <div class="tw"><table>
+    <tr><th>Мир</th><th>Стиль</th></tr>
+    <tr><td>Золотой век</td><td>Ротоскоп, зернистая плёнка, чёрно-белый с красным</td></tr>
+    <tr><td>Серебряный век</td><td>Точки Бен-Дэй, плоские заливки, лопающиеся пузыри речи</td></tr>
+    <tr><td>90-е</td><td>Резкая штриховка, ксерокс, неоновый хром</td></tr>
+    <tr><td>Мир Говарда</td><td>Пластилин, кукольная покадровая анимация, отпечатки пальцев</td></tr>
+    <tr><td>Мир Мун-Гёрл</td><td>Яркая 2D-вырезная анимация, коллаж</td></tr>
+    <tr><td>Мир Стрэнджа</td><td>Калейдоскоп, акварель, текучие линии, геометрия заклинаний</td></tr>
+    <tr><td>Мир Сёрфера</td><td>Космическая живопись маслом, медленные движения</td></tr>
+    <tr><td>«Правка»</td><td>Белая пустота, карандашные наброски, ластик</td></tr>
+    <tr><td>Финал</td><td>Все стили в единой линии («общий штрих»)</td></tr>
+  </table></div>
+</section>
+
+<section class="sec" id="storyboard" style="margin-bottom:24px">
+  <h2>Раскадровка и аниматик трейлера</h2>
+  <p>Трейлер на 47 секунд: 13 кадров с таймкодами, двумя поворотами (0:34 и 0:40) и звуковыми указаниями. Кнопка «Запустить аниматик» вверху страницы проигрывает кадры по порядку.</p>
+</section>
+
+<main class="grid">
+
+<!-- 1 -->
+<figure class="frame" data-d="5" data-tc="0:00" data-shot="Общий план" data-sfx="Скрип ластика. Тишина. Шорох бумаги." data-line="«Это не конец. Это сокращение.»">
+<svg viewBox="0 0 320 180" role="img" aria-label="Ластик стирает город, нарисованный карандашом">
+  <rect width="320" height="180" fill="#f3f1ea"/>
+  <g fill="none" stroke="#14213D" stroke-width="1.6">
+    <rect x="14" y="82" width="26" height="78"/><rect x="44" y="52" width="22" height="108"/><rect x="70" y="96" width="30" height="64"/><rect x="104" y="30" width="24" height="130"/><rect x="132" y="72" width="26" height="88"/>
+    <path d="M6 160H165"/>
+    <path d="M50 64h10M50 78h10M50 92h10M110 44h12M110 60h12M110 76h12"/>
+  </g>
+  <g fill="none" stroke="#b9bcc0" stroke-width="1" stroke-dasharray="3 5">
+    <rect x="164" y="62" width="24" height="98"/><rect x="192" y="92" width="30" height="68"/><rect x="226" y="44" width="26" height="116"/><rect x="256" y="84" width="40" height="76"/><path d="M165 160H312"/>
+  </g>
+  <g fill="#b9bcc0"><circle cx="176" cy="150" r="1.6"/><circle cx="196" cy="156" r="1.4"/><circle cx="214" cy="152" r="1.8"/><circle cx="238" cy="157" r="1.3"/><circle cx="262" cy="153" r="1.6"/></g>
+  <g transform="translate(150 58) rotate(-16)">
+    <rect x="46" y="-6" width="120" height="34" fill="#14213D"/>
+    <rect width="32" height="22" rx="3" fill="#e7566c"/><rect x="22" width="26" height="22" rx="3" fill="#2b6cb0"/>
+    <circle cx="48" cy="11" r="9" fill="#14213D"/>
+  </g>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:00–0:05<span>Общий план</span></div>
+<p><b>Мир:</b> бумага и карандаш</p><p><b>Палитра:</b> бумажный белый, графит, красно-синий ластик</p><p><b>Звук:</b> скрип ластика, шорох бумаги, тишина</p><p class="quote">«Это не конец. Это сокращение.»</p></figcaption>
+</figure>
+
+<!-- 2 -->
+<figure class="frame" data-d="4" data-tc="0:05" data-shot="Средний план, камера снизу" data-sfx="Глухой деревянный стук ящика. Кукольное пианино." data-line="«Прекрасно. Меня отменили. Опять.»">
+<svg viewBox="0 0 320 180" role="img" aria-label="Пластилиновая утка в шляпе тащит ящик «Отменено»">
+  <rect width="320" height="180" fill="#8fc1ae"/>
+  <path d="M0 140 Q80 124 160 140 T320 134 V180 H0Z" fill="#9b6b4a"/>
+  <g fill="#7d6a5e"><polygon points="20,150 44,128 70,150"/><polygon points="260,152 282,122 308,152"/><polygon points="230,150 244,138 256,150"/></g>
+  <ellipse cx="150" cy="122" rx="30" ry="32" fill="#4a6b7a"/>
+  <g fill="none" stroke="#6f8f9d" stroke-width="1.4"><path d="M138 118q6-8 12 0q6 8 12 0"/><path d="M136 128q7-9 14 0q7 9 14 0"/></g>
+  <ellipse cx="150" cy="80" rx="21" ry="19" fill="#f7f1dc"/>
+  <path d="M158 82 Q182 80 184 90 Q170 96 158 92Z" fill="#f08a2d"/>
+  <ellipse cx="144" cy="76" rx="6" ry="5" fill="#fff"/><ellipse cx="160" cy="76" rx="6" ry="5" fill="#fff"/>
+  <circle cx="145" cy="78" r="2.2" fill="#111"/><circle cx="161" cy="78" r="2.2" fill="#111"/>
+  <path d="M137 72h14M155 72h14" stroke="#4a3a2a" stroke-width="3"/>
+  <ellipse cx="150" cy="66" rx="30" ry="5" fill="#5c3b24"/><rect x="136" y="46" width="28" height="20" rx="7" fill="#6b4529"/>
+  <g transform="translate(196 118) rotate(-5)"><rect width="64" height="42" fill="#c08850"/><path d="M0 14H64M0 28H64" stroke="#8c5e32" stroke-width="2"/><text x="32" y="25" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="9" fill="#7a1b1b">ОТМЕНЕНО</text></g>
+  <path d="M196 140 Q180 130 168 128" stroke="#4a6b7a" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <g fill="none" stroke="#fff" stroke-opacity=".5"><circle cx="40" cy="40" r="8"/><circle cx="40" cy="40" r="4"/><circle cx="280" cy="30" r="10"/><circle cx="280" cy="30" r="5"/></g>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:05–0:09<span>Средний план, камера снизу</span></div>
+<p><b>Мир:</b> пластилин, видны отпечатки пальцев</p><p><b>Палитра:</b> мятный, глиняный коричневый, жёлтый клюв</p><p><b>Звук:</b> деревянный стук ящика, кукольное пианино</p><p class="quote">«Прекрасно. Меня отменили. Опять.»</p></figcaption>
+</figure>
+
+<!-- 3 -->
+<figure class="frame" data-d="3" data-tc="0:09" data-shot="Динамичный, падение сверху" data-sfx="Свист падения, комическое «ХЛОП!»" data-line="«Это ваш шлем? Он больше не ваш!»">
+<svg viewBox="0 0 320 180" role="img" aria-label="Девушка-белка падает с неба с трофейным шлемом, фон из точек Бен-Дэй">
+  <rect width="320" height="180" fill="#f2c230"/><rect width="320" height="180" fill="url(#dots)"/>
+  <g stroke="#fff" stroke-width="2" opacity=".8"><path d="M60 0V70M110 0V40M210 0V60M260 0V90M290 0V30"/></g>
+  <path d="M150 120 Q60 120 70 50 Q80 8 130 30 Q100 50 118 86 Q130 108 160 108Z" fill="#8a5a2b" stroke="#14213D" stroke-width="2.5"/>
+  <path d="M150 124 L178 124 L184 168 L146 168Z" fill="#2f9e5a" stroke="#14213D" stroke-width="2.5"/>
+  <circle cx="165" cy="106" r="17" fill="#f2d2b0" stroke="#14213D" stroke-width="2.5"/>
+  <path d="M148 102 Q165 78 184 100 Q172 94 148 102Z" fill="#6b3f1d"/>
+  <circle cx="160" cy="106" r="2" fill="#14213D"/><circle cx="171" cy="106" r="2" fill="#14213D"/><path d="M158 113 Q165 120 173 113" stroke="#14213D" stroke-width="2" fill="none"/>
+  <path d="M178 126 L206 80" stroke="#f2d2b0" stroke-width="9" stroke-linecap="round"/>
+  <g transform="translate(206 52)"><path d="M0 28 Q0 0 22 0 Q44 0 44 28Z" fill="#7b8794" stroke="#14213D" stroke-width="2.5"/><path d="M4 6 L-6 -10M40 6L50 -10" stroke="#14213D" stroke-width="4" stroke-linecap="round"/><rect y="28" width="44" height="6" fill="#4d5560"/></g>
+  <polygon points="255,120 266,138 288,132 278,152 300,164 272,166 266,178 254,160 232,170 242,148 222,138 246,138" fill="#fff" stroke="#14213D" stroke-width="2.5"/>
+  <text x="262" y="156" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="13" fill="#D7263D" transform="rotate(-8 262 156)">ХЛОП!</text>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:09–0:12<span>Динамичный, падение сверху</span></div>
+<p><b>Мир:</b> серебряный век, точки Бен-Дэй, лопающиеся пузыри</p><p><b>Палитра:</b> жёлтый, красный растр, чёрный контур</p><p><b>Звук:</b> свист, «ХЛОП!»</p><p class="quote">«Это ваш шлем? Теперь мой!»</p></figcaption>
+</figure>
+
+<!-- 4 -->
+<figure class="frame" data-d="8" data-tc="0:12" data-shot="Монтаж семи вспышек" data-sfx="Хлопки, дзинь, на каждого свой инструмент." data-line="Каждый появляется в собственном стиле.">
+<svg viewBox="0 0 320 180" role="img" aria-label="Семь героев в семи разных стилях анимации, рядом друг с другом">
+  <g>
+    <rect width="46" height="180" fill="#8fc1ae"/><ellipse cx="23" cy="100" rx="15" ry="17" fill="#f7f1dc"/><rect x="9" y="76" width="28" height="8" fill="#6b4529"/><ellipse cx="23" cy="140" rx="17" ry="24" fill="#4a6b7a"/>
+    <rect x="46" width="46" height="180" fill="#f2c230"/><rect x="46" width="46" height="180" fill="url(#dots)"/><path d="M60 140 Q40 110 62 80 Q70 110 82 124Z" fill="#8a5a2b" stroke="#14213D" stroke-width="2"/><circle cx="72" cy="108" r="10" fill="#f2d2b0" stroke="#14213D" stroke-width="2"/>
+    <rect x="92" width="46" height="180" fill="#e8e1d0"/><rect x="92" width="46" height="180" fill="url(#hatch)" opacity=".5"/><circle cx="115" cy="100" r="16" fill="#D7263D" stroke="#111" stroke-width="2"/><path d="M104 96q4-6 8 0M118 96q4-6 8 0" stroke="#111" stroke-width="5" fill="none"/><rect x="101" y="118" width="28" height="38" fill="#D7263D" stroke="#111" stroke-width="2"/>
+    <rect x="138" width="46" height="180" fill="#0d1b3d"/><ellipse cx="161" cy="148" rx="20" ry="4" fill="#c7d2dc" transform="rotate(-18 161 148)"/><path d="M161 142V108" stroke="#c7d2dc" stroke-width="8" stroke-linecap="round"/><circle cx="161" cy="98" r="9" fill="#c7d2dc"/>
+    <rect x="184" width="46" height="180" fill="url(#wash)"/><circle cx="207" cy="92" r="24" fill="none" stroke="#ff9a3c" stroke-width="2" stroke-dasharray="4 3"/><circle cx="207" cy="92" r="14" fill="none" stroke="#ff9a3c" stroke-width="2"/><path d="M194 140 Q207 104 220 140Z" fill="#c1272d"/><circle cx="207" cy="112" r="8" fill="#f2d2b0"/>
+    <rect x="230" width="46" height="180" fill="#f7a8c8"/><circle cx="244" cy="116" r="9" fill="#1B98C9"/><rect x="237" y="124" width="14" height="22" fill="#fff"/><ellipse cx="262" cy="136" rx="13" ry="18" fill="#7ac943"/><circle cx="262" cy="112" r="8" fill="#7ac943"/>
+    <rect x="276" width="44" height="180" fill="#10261c"/><circle cx="298" cy="100" r="30" fill="url(#gglow)"/><path d="M284 156 Q282 110 298 86 Q314 110 312 156Z" fill="#3f7d3a"/><circle cx="293" cy="108" r="2.5" fill="#ffe76a"/><circle cx="303" cy="108" r="2.5" fill="#ffe76a"/>
+  </g>
+  <g stroke="#fff" stroke-width="2"><path d="M46 0V180M92 0V180M138 0V180M184 0V180M230 0V180M276 0V180"/></g>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:12–0:20<span>Монтаж семи вспышек</span></div>
+<p><b>Мир:</b> пластилин, Бен-Дэй, ксерокс, масло, акварель, вырезной коллаж, болото</p><p><b>Палитра:</b> у каждого героя своя</p><p><b>Звук:</b> ксилофон, виолончель, синтезатор, кукольное пианино; «хлоп» на каждого</p><p class="quote">Команда: утка, белка, наёмник, сёрфер, маг, девочка с динозавром, болотный.</p></figcaption>
+</figure>
+
+<!-- 5 -->
+<figure class="frame" data-d="2" data-tc="0:20" data-shot="Сверхобщий, облёт" data-sfx="Оркестр нарастает, шелест тысяч страниц." data-line="Архив размером с галактику.">
+<svg viewBox="0 0 320 180" role="img" aria-label="Спираль из книг-миров: библиотека размером с галактику">
+  <rect width="320" height="180" fill="#120f24"/>
+  <circle cx="160" cy="90" r="120" fill="url(#glow)" opacity=".35"/>
+  <g fill="none">
+    <ellipse cx="160" cy="90" rx="40" ry="14" stroke="#e9b44c" stroke-width="9" stroke-dasharray="5 2"/>
+    <ellipse cx="160" cy="90" rx="70" ry="26" stroke="#d7263d" stroke-width="10" stroke-dasharray="7 2"/>
+    <ellipse cx="160" cy="90" rx="102" ry="40" stroke="#1B98C9" stroke-width="11" stroke-dasharray="4 2"/>
+    <ellipse cx="160" cy="90" rx="138" ry="58" stroke="#8e6ad8" stroke-width="12" stroke-dasharray="8 3"/>
+  </g>
+  <circle cx="160" cy="90" r="11" fill="#fff6c8"/>
+  <g fill="#fff"><path d="M90 40l6 12-12 0z"/><path d="M230 144l6 12-12 0z"/><path d="M268 60l5 10-10 0z"/><path d="M52 126l5 10-10 0z"/><path d="M196 30l5 10-10 0z"/></g>
+  <circle cx="160" cy="90" r="150" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="30"/>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:20–0:22<span>Сверхобщий, облёт</span></div>
+<p><b>Мир:</b> бумажный Архив, миры-тома</p><p><b>Палитра:</b> ночной фиолет, золото, красное, голубое; корешки разных серий</p><p><b>Камео:</b> мелькают как закладки (Росомаха, Тор, Капитан Марвел, Ракета и др.)</p><p><b>Звук:</b> оркестровый эпик, шелест страниц</p></figcaption>
+</figure>
+
+<!-- 5b камео -->
+<figure class="frame" data-d="2" data-tc="0:22" data-shot="Быстрый монтаж камео" data-sfx="Двенадцать быстрых ударов, по одному на героя." data-line="Камео по полсекунды: когти, молот, паутина, звезда.">
+<svg viewBox="0 0 320 180" role="img" aria-label="Сетка из двенадцати камео: Росомаха, Тор, Человек-Паук, Капитан Марвел, Чёрная Пантера, Халк, Ванда, Ракета, Грут, Мисс Марвел, Танос, Локи">
+  <g transform="translate(0 0)"><rect width="80" height="60" fill="#f2c230"/><path d="M30 42L32 12M40 42L40 8M50 42L48 12" stroke="#dfe6ec" stroke-width="3" stroke-linecap="round"/><rect x="26" y="40" width="28" height="8" fill="#14213D"/><text class="nm" x="40" y="57">Росомаха</text></g>
+  <g transform="translate(80 0)"><rect width="80" height="60" fill="#3b5a7a"/><rect x="24" y="10" width="32" height="14" fill="#9aa7b5" stroke="#14213D" stroke-width="1.5"/><rect x="37" y="24" width="6" height="22" fill="#6b4529"/><text class="nm" x="40" y="57">Тор</text></g>
+  <g transform="translate(160 0)"><rect width="80" height="60" fill="#1B98C9"/><circle cx="40" cy="26" r="17" fill="#D7263D" stroke="#111" stroke-width="1.5"/><path d="M40 9V43M23 26H57M28 14L52 38M52 14L28 38" stroke="#111" stroke-width=".8"/><polygon points="28,21 38,25 30,30" fill="#fff" stroke="#111"/><polygon points="52,21 42,25 50,30" fill="#fff" stroke="#111"/><text class="nm" x="40" y="57">Человек-Паук</text></g>
+  <g transform="translate(240 0)"><rect width="80" height="60" fill="#1d2c6e"/><polygon points="40,10 45,21 57,22 48,30 51,42 40,35 29,42 32,30 23,22 35,21" fill="#f2c230" stroke="#D7263D" stroke-width="1.5"/><text class="nm" x="40" y="57">Капитан Марвел</text></g>
+  <g transform="translate(0 60)"><rect width="80" height="60" fill="#4b2a7a"/><polygon points="28,18 30,6 38,15" fill="#15151a"/><polygon points="52,18 50,6 42,15" fill="#15151a"/><circle cx="40" cy="28" r="14" fill="#15151a"/><path d="M32 26l7 2M48 26l-7 2" stroke="#fff" stroke-width="2.5"/><text class="nm" x="40" y="57">Чёрная Пантера</text></g>
+  <g transform="translate(80 60)"><rect width="80" height="60" fill="#2f6b2a"/><rect x="24" y="14" width="32" height="26" rx="8" fill="#7ac943" stroke="#14213D" stroke-width="1.5"/><path d="M33 14V28M40 14V28M47 14V28" stroke="#14213D"/><rect x="30" y="40" width="20" height="7" fill="#6b3fa0"/><text class="nm" x="40" y="57">Халк</text></g>
+  <g transform="translate(160 60)"><rect width="80" height="60" fill="#8a1c2b"/><polygon points="24,36 26,16 34,26 40,10 46,26 54,16 56,36" fill="#D7263D" stroke="#f2c230" stroke-width="2"/><rect x="24" y="36" width="32" height="4" fill="#f2c230"/><text class="nm" x="40" y="57">Ванда</text></g>
+  <g transform="translate(240 60)"><rect width="80" height="60" fill="#e08a2d"/><circle cx="28" cy="14" r="5" fill="#9aa7b5"/><circle cx="52" cy="14" r="5" fill="#9aa7b5"/><circle cx="40" cy="28" r="15" fill="#9aa7b5"/><ellipse cx="33" cy="28" rx="6" ry="4" fill="#222"/><ellipse cx="47" cy="28" rx="6" ry="4" fill="#222"/><circle cx="40" cy="36" r="2" fill="#222"/><text class="nm" x="40" y="57">Ракета</text></g>
+  <g transform="translate(0 120)"><rect width="80" height="60" fill="#6b4529"/><path d="M34 46 Q36 28 32 14 L48 14 Q44 28 46 46Z" fill="#a3764a" stroke="#14213D"/><circle cx="37" cy="24" r="1.6"/><circle cx="43" cy="24" r="1.6"/><circle cx="28" cy="12" r="5" fill="#5aa83a"/><circle cx="52" cy="12" r="5" fill="#5aa83a"/><circle cx="40" cy="8" r="5" fill="#5aa83a"/><text class="nm" x="40" y="57">Грут</text></g>
+  <g transform="translate(80 120)"><rect width="80" height="60" fill="#e0457b"/><polygon points="44,6 28,30 38,30 34,48 54,22 43,22" fill="#f2c230" stroke="#1d2c6e" stroke-width="1.5"/><text class="nm" x="40" y="57">Мисс Марвел</text></g>
+  <g transform="translate(160 120)"><rect width="80" height="60" fill="#5b2a86"/><rect x="24" y="14" width="32" height="26" rx="6" fill="#e3b341" stroke="#14213D" stroke-width="1.5"/><circle cx="30" cy="22" r="3" fill="#D7263D"/><circle cx="37" cy="18" r="3" fill="#1B98C9"/><circle cx="44" cy="18" r="3" fill="#5aa83a"/><circle cx="51" cy="22" r="3" fill="#f6f6f2"/><rect x="28" y="40" width="24" height="8" fill="#3b2060"/><text class="nm" x="40" y="57">Танос</text></g>
+  <g transform="translate(240 120)"><rect width="80" height="60" fill="#1f7a4a"/><path d="M40 44 Q24 40 26 22 Q28 14 32 14 Q30 6 20 4 Q34 2 36 14 L44 14 Q46 2 60 4 Q50 6 48 14 Q52 14 54 22 Q56 40 40 44Z" fill="#e3b341" stroke="#14213D" stroke-width="1.2"/><text class="nm" x="40" y="57">Локи</text></g>
+  <path d="M80 0V180M160 0V180M240 0V180M0 60H320M0 120H320" stroke="#fff" stroke-width="2"/>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:22–0:24<span>Быстрый монтаж камео</span></div>
+<p><b>Мир:</b> каждый герой в своём цвете и со своим символом: когти, молот, паутина, звезда, маска, кулак, корона, дерево, перчатка, рога</p><p><b>Правило:</b> по полсекунды на героя, один жест на камео</p><p><b>Звук:</b> двенадцать быстрых ударов, по одному на героя</p><p class="quote">Полный состав в трейлере: 12–20 камео, остальные как силуэты.</p></figcaption>
+</figure>
+
+<!-- 6 -->
+<figure class="frame" data-d="4" data-tc="0:24" data-shot="Широкий, волна с краю" data-sfx="Нарастающий шорох, затем вакуум." data-line="Белая «Правка» накатывает.">
+<svg viewBox="0 0 320 180" role="img" aria-label="Белая волна пустоты накатывает на цветные миры, команда бежит">
+  <rect width="320" height="180" fill="#1B98C9"/>
+  <rect width="110" height="180" fill="#f2c230"/><rect width="110" height="180" fill="url(#dots)"/>
+  <rect x="110" width="90" height="180" fill="#D7263D"/><rect x="110" width="90" height="180" fill="url(#hatch)" opacity=".4"/>
+  <rect x="200" width="120" height="180" fill="url(#wash)"/>
+  <path d="M320 0 L120 0 Q170 60 130 100 Q96 140 150 180 L320 180Z" fill="#f6f6f2"/>
+  <g stroke="#9ba3ad" stroke-width="1" fill="none"><path d="M150 20 Q200 50 170 90"/><path d="M180 130 Q230 120 260 150"/><path d="M210 30 Q260 40 290 20"/><path d="M200 80 Q250 90 300 70" stroke-dasharray="3 4"/></g>
+  <g fill="#14213D"><circle cx="40" cy="140" r="6"/><rect x="34" y="146" width="12" height="22" rx="4"/><circle cx="62" cy="142" r="5"/><rect x="57" y="147" width="10" height="21" rx="4"/><circle cx="84" cy="140" r="6"/><rect x="78" y="146" width="12" height="22" rx="4"/><circle cx="12" cy="143" r="5"/><rect x="7" y="148" width="10" height="20" rx="4"/></g>
+  <path d="M96 60 L74 56M100 80 L68 80M98 100 L72 106" stroke="#fff" stroke-width="2"/>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:24–0:28<span>Широкий, волна справа</span></div>
+<p><b>Мир:</b> «Правка» стирает миры</p><p><b>Палитра:</b> белая пустота против насыщенных цветов; в белом остаются карандашные линии</p><p><b>Звук:</b> нарастающий шорох, затем вакуум</p></figcaption>
+</figure>
+
+<!-- 7 -->
+<figure class="frame" data-d="3" data-tc="0:28" data-shot="Крупный план, медленный наезд" data-sfx="Только виолончель. Эхо космоса." data-line="Сёрфер, тихо: «Они не успели попрощаться».">
+<svg viewBox="0 0 320 180" role="img" aria-label="Сёрфер на доске смотрит на гаснущую планету, живопись маслом">
+  <rect width="320" height="180" fill="#0d1b3d"/>
+  <g fill="#fff" opacity=".8"><circle cx="30" cy="30" r="1"/><circle cx="80" cy="20" r="1.4"/><circle cx="130" cy="44" r="1"/><circle cx="290" cy="24" r="1.2"/><circle cx="260" cy="150" r="1"/><circle cx="60" cy="150" r="1.3"/></g>
+  <circle cx="232" cy="96" r="52" fill="#3b5a7a"/>
+  <path d="M232 44 A52 52 0 0 1 232 148 Q200 100 232 44Z" fill="#f3f1ea" opacity=".9"/>
+  <circle cx="232" cy="96" r="52" fill="none" stroke="#f3f1ea" stroke-dasharray="3 6" stroke-width="1.5"/>
+  <g fill="none" stroke="#4fb6c9" stroke-width="3" stroke-linecap="round" opacity=".6"><path d="M10 120 Q60 100 100 128"/><path d="M0 146 Q70 126 140 150"/></g>
+  <ellipse cx="96" cy="142" rx="50" ry="6" fill="#c7d2dc" transform="rotate(-12 96 142)"/>
+  <path d="M96 136 L92 96" stroke="#c7d2dc" stroke-width="10" stroke-linecap="round"/><circle cx="94" cy="84" r="11" fill="#d7dee5"/>
+  <path d="M104 100 L122 88" stroke="#c7d2dc" stroke-width="6" stroke-linecap="round"/>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#c7d2dc" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:28–0:31<span>Крупный план, медленный наезд</span></div>
+<p><b>Мир:</b> космическая живопись маслом, медленное движение</p><p><b>Палитра:</b> глубокий синий, серебро, бирюзовые мазки</p><p><b>Звук:</b> одна виолончель</p><p class="quote">«Они даже не успели попрощаться.»</p></figcaption>
+</figure>
+
+<!-- 8 -->
+<figure class="frame" data-d="3" data-tc="0:31" data-shot="Два плана, ракурс «в глаза»" data-sfx="Сердцебиение болота. Тихая синтезаторная нота." data-line="Стрэндж: «Мы не можем спасти всех».">
+<svg viewBox="0 0 320 180" role="img" aria-label="Болотное существо светится от страха, рядом маг с мандалой заклинания">
+  <rect width="160" height="180" fill="#10261c"/><rect x="160" width="160" height="180" fill="#3a2150"/>
+  <circle cx="80" cy="100" r="76" fill="url(#gglow)"/>
+  <path d="M46 180 Q40 110 80 62 Q120 110 114 180Z" fill="#3f7d3a"/>
+  <g fill="#2a5a2a"><circle cx="62" cy="130" r="5"/><circle cx="96" cy="150" r="6"/><circle cx="82" cy="112" r="4"/></g>
+  <circle cx="68" cy="92" r="5" fill="#ffe76a"/><circle cx="92" cy="92" r="5" fill="#ffe76a"/>
+  <g transform="translate(240 100)">
+    <circle r="54" fill="none" stroke="#ff9a3c" stroke-width="2" stroke-dasharray="5 4"/><circle r="38" fill="none" stroke="#ff9a3c" stroke-width="2"/>
+    <path d="M-30 70 Q0 -4 30 70Z" fill="#c1272d"/><circle cy="-6" r="13" fill="#f2d2b0"/><path d="M-14 -14 Q0 -26 14 -14" stroke="#555" stroke-width="5" fill="none"/>
+  </g>
+  <rect x="104" y="8" width="112" height="34" rx="6" fill="#fff"/><path d="M200 42 L214 58 L190 42Z" fill="#fff"/>
+  <text x="160" y="22" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="500" font-size="9" fill="#14213D">Мы не можем</text>
+  <text x="160" y="34" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="500" font-size="9" fill="#14213D">спасти всех.</text>
+  <path d="M160 0V180" stroke="#fff" stroke-width="2"/>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:31–0:34<span>Два плана, ракурс в глаза</span></div>
+<p><b>Мир:</b> болото (глубокий зелёный) и акварель мага (фиолетовый)</p><p><b>Палитра:</b> светящийся зелёный против оранжевой магии</p><p><b>Звук:</b> тихая синтезаторная нота, сердцебиение</p><p class="quote">«Мы не можем спасти всех.»</p></figcaption>
+</figure>
+
+<!-- 9 -->
+<figure class="frame" data-d="3" data-tc="0:34" data-shot="Крупный, нарушение четвёртой стены" data-sfx="Тишина 0,5 сек. Рвётся бумага рамки." data-line="«Нас стирают не за то, что мы плохие. Нас перестали читать.»">
+<svg viewBox="0 0 320 180" role="img" aria-label="Наёмник в красной маске выходит за границу кадра и говорит со зрителем">
+  <rect width="320" height="180" fill="#e8e1d0"/><rect width="320" height="180" fill="url(#hatch)" opacity=".35"/>
+  <rect x="26" y="20" width="268" height="140" fill="#f6f1e6" stroke="#14213D" stroke-width="3" stroke-dasharray="8 4"/>
+  <circle cx="160" cy="104" r="64" fill="#c1121f" stroke="#111" stroke-width="3"/>
+  <path d="M112 80 Q130 56 150 92 Q134 112 112 100Z" fill="#111"/><path d="M208 80 Q190 56 170 92 Q186 112 208 100Z" fill="#111"/>
+  <path d="M122 84 Q132 76 142 90 Q134 98 122 92Z" fill="#fff"/><path d="M198 84 Q188 76 178 90 Q186 98 198 92Z" fill="#fff"/>
+  <path d="M160 60V140M130 128Q160 140 190 128" stroke="#7a0b13" stroke-width="2" fill="none"/>
+  <g transform="translate(226 14)"><rect width="84" height="46" rx="8" fill="#fff" stroke="#14213D" stroke-width="2"/><path d="M14 46 L2 64 L30 46Z" fill="#fff" stroke="#14213D" stroke-width="2"/><rect x="16" y="46" width="22" height="3" fill="#fff"/>
+  <text x="42" y="18" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="8" fill="#14213D">Нас просто</text><text x="42" y="30" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="8" fill="#D7263D">перестали</text><text x="42" y="41" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="8" fill="#14213D">читать.</text></g>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:34–0:37<span>Крупный, четвёртая стена</span></div>
+<p><b>Мир:</b> ксерокс-комикс, рамка кадра рвётся и дрожит</p><p><b>Палитра:</b> красный, чёрный, белая бумага</p><p><b>Звук:</b> тишина 0,5 сек, треск бумаги</p><p class="quote">«Нас стирают не за то, что мы плохие. Нас перестали читать.»</p></figcaption>
+</figure>
+
+<!-- 10 -->
+<figure class="frame" data-d="3" data-tc="0:37" data-shot="Широкий, статичная камера" data-sfx="Пауза. Одна нота, затем гул." data-line="Редактор держит один детский рисунок.">
+<svg viewBox="0 0 320 180" role="img" aria-label="Огромная рука держит детский рисунок над рядами коленопреклонённых силуэтов">
+  <rect width="320" height="180" fill="#0a0a12"/>
+  <polygon points="150,70 170,70 230,180 90,180" fill="#fff6c8" opacity=".14"/>
+  <rect y="96" width="320" height="84" fill="url(#kneel)"/><rect y="96" width="320" height="84" fill="url(#kneel)" transform="translate(7 12)" opacity=".6"/>
+  <g fill="#d9c2a1" stroke="#14213D" stroke-width="2"><rect x="120" y="-20" width="80" height="50" rx="12"/><rect x="124" y="20" width="14" height="46" rx="7"/><rect x="141" y="22" width="14" height="52" rx="7"/><rect x="158" y="22" width="14" height="50" rx="7"/><rect x="175" y="20" width="14" height="44" rx="7"/></g>
+  <g transform="translate(138 56) rotate(-4)"><rect width="46" height="34" fill="#fff"/><path d="M8 28 Q14 8 22 22 Q34 4 36 28" stroke="#8a5a2b" stroke-width="3" fill="none"/><circle cx="26" cy="12" r="3" fill="#2f9e5a"/></g>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:37–0:40<span>Широкий, статичная камера</span></div>
+<p><b>Мир:</b> тёмный зал Редактора, герои на коленях</p><p><b>Палитра:</b> чёрный, тёплый свет рисунка</p><p><b>Звук:</b> одна нота, гул библиотеки</p><p class="quote">Деталь: на рисунке нарисована Девушка-Белка.</p></figcaption>
+</figure>
+
+<!-- 11 -->
+<figure class="frame" data-d="4" data-tc="0:40" data-shot="Снизу вверх, героический" data-sfx="Все инструменты входят по одному. Аплодисменты бумаги." data-line="Белка: «Я не поняла, но это бесит».">
+<svg viewBox="0 0 320 180" role="img" aria-label="Девушка-белка шагает вперёд, пустота отступает, стили сливаются">
+  <rect x="40" width="40" height="180" fill="#f2c230"/><rect x="40" width="40" height="180" fill="url(#dots)"/>
+  <rect x="80" width="40" height="180" fill="#2f9e5a"/>
+  <rect x="120" width="80" height="180" fill="url(#wash)"/>
+  <rect x="200" width="40" height="180" fill="#D7263D"/><rect x="200" width="40" height="180" fill="url(#hatch)" opacity=".5"/>
+  <rect x="240" width="40" height="180" fill="#1B98C9"/><rect x="240" width="40" height="180" fill="url(#dotsC)"/>
+  <path d="M0 0H44Q20 90 44 180H0Z" fill="#f6f6f2"/><path d="M320 0H276Q300 90 276 180H320Z" fill="#f6f6f2"/>
+  <g stroke="#9ba3ad" fill="none"><path d="M8 20Q24 50 12 80"/><path d="M14 110Q30 140 10 160"/><path d="M312 30Q296 60 308 90"/></g>
+  <circle cx="160" cy="100" r="80" fill="url(#glow)"/>
+  <path d="M168 150 Q96 150 110 80 Q122 32 160 54 Q142 72 150 100 Q156 124 178 130Z" fill="#8a5a2b" stroke="#14213D" stroke-width="3"/>
+  <rect x="168" y="112" width="34" height="62" rx="8" fill="#2f9e5a" stroke="#14213D" stroke-width="3"/>
+  <circle cx="186" cy="98" r="18" fill="#f2d2b0" stroke="#14213D" stroke-width="3"/>
+  <circle cx="180" cy="98" r="2" fill="#14213D"/><circle cx="192" cy="98" r="2" fill="#14213D"/><path d="M178 106 Q186 114 195 106" stroke="#14213D" stroke-width="2.4" fill="none"/>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:40–0:44<span>Снизу вверх, героический</span></div>
+<p><b>Мир:</b> все стили впервые в одном кадре</p><p><b>Палитра:</b> радуга миров, отступающая белая «Правка»</p><p><b>Звук:</b> инструменты входят по одному</p><p class="quote">«Я не поняла, но это бесит.»</p></figcaption>
+</figure>
+
+<!-- 12 -->
+<figure class="frame" data-d="3" data-tc="0:44" data-shot="Финальный, пауза" data-sfx="Один общий аккорд, затем звук печатной машинки." data-line="НЕОДОБРЕННЫЙ ТИРАЖ">
+<svg viewBox="0 0 320 180" role="img" aria-label="Тысячи бумажных силуэтов открывают глаза, поверх штамп с названием">
+  <rect width="320" height="180" fill="#f1ede0"/>
+  <rect width="320" height="180" fill="url(#eyes)"/>
+  <g transform="translate(160 90) rotate(-5)"><rect x="-122" y="-34" width="244" height="68" fill="#f6f6f2" stroke="#D7263D" stroke-width="4"/>
+  <text y="-6" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="26" fill="#D7263D">НЕОДОБРЕННЫЙ</text>
+  <text y="22" text-anchor="middle" font-family="Rubik,sans-serif" font-weight="800" font-size="26" fill="#D7263D" letter-spacing="6">ТИРАЖ</text></g>
+  <rect x="3" y="3" width="314" height="174" fill="none" stroke="#14213D" stroke-width="2"/>
+</svg>
+<figcaption><div class="tc">0:44–0:47<span>Финальный, пауза</span></div>
+<p><b>Мир:</b> бумажная толпа, сотни силуэтов</p><p><b>Палитра:</b> бумажный, тёмные силуэты, красный штамп</p><p><b>Звук:</b> общий аккорд, звук печатной машинки</p></figcaption>
+</figure>
+
+</main>
+
+<section class="sec" id="sound">
+  <h2>Звуковые указания</h2>
+  <div class="tw"><table>
+    <tr><th>Слой</th><th>Описание</th></tr>
+    <tr><td>Музыка</td><td>Гибрид оркестрового эпика, ломаного джаза и 8-битных всплесков; у каждого мира свой инструмент: ксилофон, виолончель, синтезатор, кукольное пианино</td></tr>
+    <tr><td>Диегетика</td><td>Шорох бумаги, скрип ластика, печатная машинка, шелест страниц</td></tr>
+    <tr><td>Тишина</td><td>0,5 секунды перед каждым поворотом</td></tr>
+    <tr><td>Голос Редактора</td><td>Тихий шёпот с эхом библиотеки</td></tr>
+    <tr><td>Финал</td><td>Все инструменты играют одну ноту</td></tr>
+  </table></div>
+</section>
+
+<section class="sec" id="prompt">
+  <h2>Промпт для генератора</h2>
+  <p>Готовый текст для копирования в инструмент генерации. Для видео подавайте по одному таймкоду отдельным промптом, для изображений начните с кадров раскадровки. Если инструмент не рисует названных персонажей, замените имя описанием образа («утка в мятой шляпе и плаще»), а названия и логотипы добавьте в монтаже.</p>
+  <div class="promptbox">
+    <button class="copy" id="copyBtn" type="button">Скопировать промпт</button>
+    <pre id="promptText">ЗАДАЧА
+Создай трейлер (30–60 секунд, целевой хронометраж 47 сек) и раскадровку взрослого анимационного фильма Marvel «Неодобренный тираж». Оригинальная история, не пересказ существующих сюжетов. Аудитория 18+. Тон: мрачный юмор, эпик, драма, повороты. Ужас экзистенциальный, без самоцельной жестокости.
+
+ПРЕМИСА
+Мультивселенная это бесконечный Архив: реальность это «выпуск», эпоха это «тираж». Космический Редактор, усталый архивариус, запускает «Правку»: белую пустоту, стирающую миры и оставляющую «канон». Первыми стираются отменённые серии и забытые герои.
+
+КОМАНДА «ОТДЕЛ ОТМЕНЁННЫХ»
+1. Говард-Утка: циничный лидер поневоле, первым не бросает команду.
+2. Девушка-Белка: непобедимая оптимистка, её победа над богом-пожирателем миров «неудобный канон».
+3. Дэдпул: знает, что они в комиксе, и скрывает, что понял это первым.
+4. Серебряный Сёрфер: трагический монолог, которому все мешают шутками.
+5. Доктор Стрэндж (неудачная ветка): бюрократ магии.
+6. Мун-Гёрл и Дьявол-Динозавр: эмоциональный центр.
+7. Man-Thing: молчит, светится страхом, когда подходит пустота.
+
+ПРАВИЛО ШИРОКОГО СОСТАВА
+Уровень 1: 7 героев, крупные планы. Уровень 2: 12–20 камео по 0,5–1 секунде (Росомаха, Человек-Паук, Тор, Капитан Марвел, Чёрная Пантера, Халк, Ванда, Ракета, Грут, Мисс Марвел, Танос, Локи и др.), один жест на героя. Уровень 3: «бумажная толпа» силуэтов и коллаж обложек. Уровень 4: пасхалки в углах кадра. Один герой в фокусе, у каждого мира своя палитра, не больше двух стилей в кадре, кроме финала.
+
+ВИЗУАЛЬНЫЙ ЯЗЫК
+Каждая реальность это отдельный медиум: золотой век (ротоскоп, чёрно-белый с красным), серебряный век (Бен-Дэй), 90-е (ксерокс, штриховка, неон), мир Говарда (пластилин), мир Мун-Гёрл (вырезной коллаж), мир Стрэнджа (акварель, калейдоскоп), мир Сёрфера (масло), «Правка» (белая пустота и карандаш). Герои перенимают стиль мира («глитч идентичности»). В финале все стили сходятся в единую линию.
+
+СЮЖЕТ ТРЕЙЛЕРА
+0:00–0:05 Ластик стирает город. Голос Редактора: «Это не конец. Это сокращение».
+0:05–0:09 Говард среди обломков тащит ящик «Отменено».
+0:09–0:12 Девушка-Белка падает с неба с трофейным шлемом.
+0:12–0:20 Сбор команды: каждый герой в своём стиле.
+0:20–0:24 Архив размером с галактику, камео-сетка из 12 героев.
+0:24–0:28 «Правка» накатывает волной, команда бежит.
+0:28–0:31 Сёрфер у гаснущей планеты: «Они даже не успели попрощаться».
+0:31–0:34 Man-Thing светится, Стрэндж: «Мы не можем спасти всех».
+0:34–0:37 ПОВОРОТ 1: Дэдпул ломает четвёртую стену: «Нас перестали читать».
+0:37–0:40 Редактор держит детский рисунок Девушки-Белки.
+0:40–0:44 ПОВОРОТ 2: Белка выходит вперёд, пустота отступает, все стили гармонируют.
+0:44–0:47 Бумажная толпа открывает глаза, штамп «Неодобренный тираж».
+
+ЗВУК
+Оркестровый эпик, ломаный джаз и 8-бит; у каждого мира свой инструмент. Шорох бумаги, скрип ластика, печатная машинка. Тишина 0,5 сек перед поворотами. Голос Редактора шёпотом с эхом. Финал: все инструменты играют одну ноту.
+
+СТИЛЕВОЙ БЛОК (English)
+Experimental mixed-media animated film still, multiple animation styles colliding in a single frame: claymation, rotoscoped film grain, Ben-Day dots, 90s xerox crosshatching, watercolor, cutout collage; paper-archive multiverse, pencil sketch lines erased by white void; cinematic widescreen, adult-oriented tone, comedic-epic-dramatic mood, rich texture, hand-made imperfections, bold color coding per universe.
+
+ОГРАНИЧЕНИЯ
+Оригинальный сюжет и композиция. Не копируй готовые кадры фильмов и комиксов. Если инструмент не воспроизводит названных персонажей, используй описание образа и роли.</pre>
+  </div>
+</section>
+
+<section class="sec" id="risks">
+  <h2>Ограничения и риски</h2>
+  <div class="tw"><table>
+    <tr><th>Риск</th><th>Решение</th></tr>
+    <tr><td>Нельзя показать всех персонажей Marvel</td><td>Четыре уровня состава: команда, камео, толпа, пасхалки</td></tr>
+    <tr><td>Перегруженность кадра</td><td>Один герой в фокусе, максимум два стиля, цветовое кодирование миров</td></tr>
+    <tr><td>Генератор отказывается рисовать персонажей</td><td>Описания образов вместо имён, названия и логотипы в монтаже</td></tr>
+    <tr><td>Нет официальной графики и логотипов</td><td>Условные иконки и силуэты; логотип студии не воспроизводится</td></tr>
+    <tr><td>Права на персонажей</td><td>Концепт-проект для личного использования; коммерческое использование требует прав правообладателя</td></tr>
+    <tr><td>Видео и растровые кадры не создаются в чате</td><td>Векторная раскадровка, аниматик и промпты для внешних инструментов</td></tr>
+  </table></div>
+</section>
+
+
+<footer>Состав на экране устроен в четыре уровня: семь героев в центре внимания, 12–20 камео по полсекунды, «бумажная толпа» силуэтов как текстура и пасхалки в углах кадров. Так мультивселенная читается широкой, но не превращается в хаос.</footer>
+</div>
+
+<div id="stage" role="dialog" aria-label="Аниматик">
+  <button class="close" id="closeBtn">Закрыть</button>
+  <div class="screen"><div id="scr" style="width:100%;height:100%"></div><div id="prog"></div></div>
+  <div id="cap"></div>
+</div>
+
+<script>
+(function(){
+  var figs=[].slice.call(document.querySelectorAll('figure.frame'));
+  var NS='http://www.w3.org/2000/svg';
+  function lab(svg,x,y,t,fs){fs=fs||7.5;var w=t.length*fs*0.58+8;var g=document.createElementNS(NS,'g');
+    var r=document.createElementNS(NS,'rect');r.setAttribute('x',x);r.setAttribute('y',y);r.setAttribute('width',w);r.setAttribute('height',fs+6);r.setAttribute('fill','#14213D');r.setAttribute('stroke','#fff');r.setAttribute('stroke-width','1');
+    var tx=document.createElementNS(NS,'text');tx.setAttribute('x',x+4);tx.setAttribute('y',y+fs+1.5);tx.setAttribute('font-family','Rubik,sans-serif');tx.setAttribute('font-weight','800');tx.setAttribute('font-size',fs);tx.setAttribute('fill','#fff');tx.textContent=t;
+    g.appendChild(r);g.appendChild(tx);svg.appendChild(g);}
+  var L={'0:00':[[10,10,'Редактор стирает серию']],'0:05':[[10,10,'Говард-Утка']],'0:09':[[10,10,'Девушка-Белка']],
+    '0:12':[[2,166,'Говард',6],[48,166,'Белка',6],[94,166,'Дэдпул',6],[140,166,'Сёрфер',6],[186,166,'Стрэндж',6],[232,166,'Мун-Гёрл',6],[278,166,'Man-Thing',6]],
+    '0:20':[[10,10,'Архив: том = мир']],'0:24':[[10,10,'Правка стирает миры']],'0:28':[[10,10,'Серебряный Сёрфер']],
+    '0:31':[[8,164,'Man-Thing'],[214,164,'Доктор Стрэндж']],'0:34':[[36,28,'Дэдпул']],'0:37':[[10,162,'Герои архива'],[206,10,'Редактор']],'0:40':[[10,162,'Девушка-Белка']]};
+  figs.forEach(function(f){var a=L[f.dataset.tc];if(!a)return;var s=f.querySelector('svg');a.forEach(function(l){lab(s,l[0],l[1],l[2],l[3]);});});
+  var stage=document.getElementById('stage'), scr=document.getElementById('scr'), cap=document.getElementById('cap'), prog=document.getElementById('prog');
+  var i=0, timer=null, playing=false;
+  function esc(t){return (t||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+  function show(n){
+    var f=figs[n]; if(!f){ stop(); return; }
+    scr.innerHTML=f.querySelector('svg').outerHTML;
+    cap.innerHTML='<div class="t">'+esc(f.dataset.tc)+' · '+esc(f.dataset.shot)+'</div><div class="q">'+esc(f.dataset.line)+'</div><div class="s">Звук: '+esc(f.dataset.sfx)+'</div>';
+    var d=+f.dataset.d;
+    prog.style.transition='none'; prog.style.width='0';
+    void prog.offsetWidth;
+    prog.style.transition='width '+d+'s linear'; prog.style.width='100%';
+    timer=setTimeout(function(){ i++; if(i>=figs.length){ stop(); } else show(i); }, d*1000);
+  }
+  function start(){ i=0; playing=true; stage.classList.add('on'); show(0); document.getElementById('closeBtn').focus(); }
+  function stop(){ playing=false; clearTimeout(timer); stage.classList.remove('on'); document.getElementById('playBtn').focus(); }
+  document.getElementById('playBtn').addEventListener('click',start);
+  document.getElementById('closeBtn').addEventListener('click',stop);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&playing) stop(); });
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('copyBtn'), p=document.getElementById('promptText');
+  if(!b||!p) return;
+  b.addEventListener('click',function(){
+    var t=p.textContent;
+    function ok(){ b.textContent='Скопировано'; setTimeout(function(){ b.textContent='Скопировать промпт'; },2000); }
+    function fallback(){
+      var r=document.createRange(); r.selectNodeContents(p);
+      var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try{ document.execCommand('copy'); ok(); }catch(e){ b.textContent='Выделено: нажмите Ctrl+C'; }
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok,fallback); } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
